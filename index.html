@@ -1,112 +1,22 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0d10" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="VLA HUD" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="styles.css" />
-  <title>VLA HUD</title>
-</head>
-<body>
-  <div class="shell">
-    <header class="topbar">
-      <div><p class="eyebrow">VLA OPERATING SYSTEM</p><h1 id="dateLabel">Today</h1></div>
-      <button id="settingsBtn" class="icon-btn" aria-label="Open settings">⚙</button>
-    </header>
-
-    <main>
-      <section id="todayView" class="view active-view">
-        <section class="hero card">
-          <div class="hero-grid">
-            <div><p class="label">CURRENT MODE</p><h2 id="modeLabel">Workday</h2><p id="cycleSummary" class="muted tight"></p></div>
-            <div><p class="label">ENERGY</p><select id="energySelect"><option>High</option><option selected>Standard</option><option>Low</option></select></div>
-          </div>
-          <div id="upcomingBanner" class="notice hidden"></div>
-          <div class="mission-wrap"><p class="label">PRIMARY MISSION</p><input id="missionInput" type="text" placeholder="Finish Network+ Module 6" /></div>
-          <div class="next-action-wrap"><p class="label">NEXT ACTION</p><input id="nextActionInput" type="text" placeholder="Complete lessons 6.1–6.3" /></div>
-        </section>
-
-        <section id="dueTodayCard" class="card hidden">
-          <div class="section-head"><div><p class="eyebrow">DUE TODAY</p><h3>Immediate actions</h3></div><span id="dueCount" class="tag"></span></div>
-          <div id="dueTodayList" class="task-list"></div>
-        </section>
-
-        <section class="card">
-          <div class="section-head"><div><p class="eyebrow">TODAY</p><h3>Daily lanes</h3></div><button id="resetTodayBtn" class="text-btn">Reset</button></div>
-          <div id="taskList" class="task-list"></div>
-          <button id="addDailyTaskBtn" class="add-btn">+ Add daily task</button>
-        </section>
-
-        <section id="itineraryTodayCard" class="card hidden">
-          <div class="section-head"><div><p class="eyebrow">VACATION</p><h3>Today’s itinerary</h3></div><button class="text-btn" data-go="tasks">Edit</button></div>
-          <div id="itineraryTodayList" class="simple-list"></div>
-        </section>
-
-        <section class="card">
-          <div class="section-head"><div><p class="eyebrow">TRAIN</p><h3 id="workoutTitle">Today’s workout</h3></div><span id="workoutTag" class="tag">Strength</span></div>
-          <p id="workoutNote" class="muted tight"></p><div id="workoutList" class="workout-list"></div>
-        </section>
-
-        <section class="card">
-          <div class="section-head"><div><p class="eyebrow">WEEKLY PROGRESS</p><h3>Keep the system moving</h3></div><button id="resetWeekBtn" class="text-btn">New week</button></div>
-          <div id="progressList" class="progress-list"></div>
-        </section>
-
-        <section class="card compact">
-          <p class="eyebrow">QUICK CAPTURE</p><textarea id="captureInput" rows="3" placeholder="Lyrics, ideas, research notes, car parts, fashion references..."></textarea>
-          <button id="saveCaptureBtn" class="primary-btn">Save to inbox</button><div id="captureCount" class="muted"></div>
-        </section>
-      </section>
-
-      <section id="scheduleView" class="view">
-        <section class="card hero"><p class="eyebrow">21-DAY ROTATION</p><h2 id="scheduleHeading"></h2><p id="scheduleSubheading" class="muted"></p><div id="cycleStrip" class="cycle-strip"></div></section>
-        <section class="card"><div class="section-head"><div><p class="eyebrow">UPCOMING</p><h3>Next 21 days</h3></div><button id="todayScheduleBtn" class="text-btn">Today</button></div><div id="scheduleList" class="schedule-list"></div></section>
-      </section>
-
-      <section id="tasksView" class="view">
-        <section class="card hero"><p class="eyebrow">TASK SYSTEM</p><h2>Plan, acquire, pack, execute.</h2><p class="muted">Tasks persist until completed or deleted. Vacation prep is stored separately from the daily lanes.</p></section>
-        <section class="card">
-          <div class="tabs" id="taskTabs">
-            <button class="tab active" data-tab="todo">To Do</button><button class="tab" data-tab="acquire">Acquire</button><button class="tab" data-tab="packing">Packing</button><button class="tab" data-tab="itinerary">Itinerary</button>
-          </div>
-          <div class="task-form">
-            <input id="generalTaskText" placeholder="Add an item..." />
-            <div class="form-grid"><input id="generalTaskDate" type="date" /><select id="generalTaskPriority"><option value="standard">Standard</option><option value="important">Important</option><option value="low">Low</option></select></div>
-            <input id="generalTaskNotes" placeholder="Optional note, time, address, or details" />
-            <button id="addGeneralTaskBtn" class="primary-btn">Add item</button>
-          </div>
-          <div class="section-head task-list-head"><h3 id="taskListHeading">To Do</h3><span id="generalTaskCount" class="tag"></span></div>
-          <div id="generalTaskList" class="task-list"></div>
-        </section>
-      </section>
-
-      <section id="progressView" class="view">
-        <section class="card hero"><p class="eyebrow">PROGRESS</p><h2>Weekly operating targets</h2><p class="muted">These totals reset when a new ISO week begins.</p></section>
-        <section class="card"><div id="progressListFull" class="progress-list"></div></section>
-      </section>
-
-      <section id="hqView" class="view">
-        <section class="card hero"><p class="eyebrow">VLA HQ</p><h2>Version 0.2.0</h2><p class="muted">Rotation, vacation overlay, task system, daily HUD, training and progress are active.</p></section>
-        <section class="card"><p class="eyebrow">INBOX</p><div id="hqInbox" class="simple-list"></div><button id="clearInboxBtn" class="text-btn danger">Clear inbox</button></section>
-        <section class="card"><p class="eyebrow">DATA</p><button id="exportBtn" class="primary-btn">Export backup</button><label class="file-btn">Import backup<input id="importInput" type="file" accept="application/json" /></label></section>
-      </section>
-    </main>
-
-    <nav class="bottom-nav"><button class="nav-item active" data-view="today">Today</button><button class="nav-item" data-view="schedule">Schedule</button><button class="nav-item" data-view="tasks">Tasks</button><button class="nav-item" data-view="progress">Progress</button><button class="nav-item" data-view="hq">HQ</button></nav>
-  </div>
-
-  <dialog id="settingsDialog"><form method="dialog" class="dialog-card"><div class="section-head"><h3>HUD Settings</h3><button class="icon-btn" value="cancel">✕</button></div>
-    <label>Cycle anchor date<input id="anchorDateInput" type="date" /></label><label>Vacation start<input id="vacationStartInput" type="date" /></label><label>Vacation end<input id="vacationEndInput" type="date" /></label>
-    <label>Cybersecurity weekly target<input id="cyberTargetInput" type="number" min="1" max="40" /></label><label>Training weekly target<input id="trainingTargetInput" type="number" min="1" max="14" /></label><label>Creative weekly target<input id="creativeTargetInput" type="number" min="1" max="30" /></label><label>Learning weekly target<input id="learningTargetInput" type="number" min="1" max="30" /></label>
-    <button id="saveSettingsBtn" class="primary-btn" value="default">Save settings</button></form></dialog>
-
-  <dialog id="modeDialog"><form method="dialog" class="dialog-card"><h3>Override today’s mode</h3><div id="modeButtons" class="mode-buttons"></div><button id="clearOverrideBtn" class="text-btn" type="button">Use automatic mode</button><button class="text-btn" value="cancel">Cancel</button></form></dialog>
-
-  <template id="taskTemplate"><label class="task-row"><input type="checkbox"/><span class="task-copy"><strong></strong><small></small></span><button class="delete-task" type="button">×</button></label></template>
-  <script src="app.js"></script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b0d10"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="VLA HUD"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css"><title>VLA HUD</title></head><body><div class="shell">
+<header class="topbar"><div><p class="eyebrow">VLA OPERATING SYSTEM</p><h1 id="dateLabel">Today</h1></div><button id="settingsBtn" class="icon-btn">⚙</button></header>
+<main>
+<section id="todayView" class="view active-view">
+<section class="hero card"><div class="hero-grid"><div><p class="label">CURRENT MODE</p><h2 id="modeLabel"></h2><p id="cycleSummary" class="muted tight"></p></div><div><p class="label">ENERGY</p><select id="energySelect"><option>High</option><option selected>Standard</option><option>Low</option></select></div></div><div id="upcomingBanner" class="notice"></div><div class="mission-wrap"><p class="label">PRIMARY MISSION</p><input id="missionInput"></div><div class="next-action-wrap"><p class="label">NEXT ACTION</p><input id="nextActionInput"></div></section>
+<section class="card"><div class="section-head"><div><p class="eyebrow">CYBERSECURITY</p><h3>Current study position</h3></div><span class="tag">A+ CORE 1</span></div><div id="cyberSummary" class="summary-grid"></div><div class="form-grid"><input id="studyMinutes" type="number" min="1" placeholder="Minutes studied"><input id="studyPages" type="number" min="0" placeholder="Pages completed"></div><button id="logStudyBtn" class="primary-btn">Log study session</button></section>
+<section id="dueTodayCard" class="card hidden"><div class="section-head"><div><p class="eyebrow">DUE TODAY</p><h3>Immediate actions</h3></div><span id="dueCount" class="tag"></span></div><div id="dueTodayList" class="task-list"></div></section>
+<section class="card"><div class="section-head"><div><p class="eyebrow">TODAY</p><h3>Daily lanes</h3></div><button id="resetTodayBtn" class="text-btn">Reset</button></div><div id="taskList" class="task-list"></div><button id="addDailyTaskBtn" class="add-btn">+ Add daily task</button></section>
+<section class="card"><div class="section-head"><div><p class="eyebrow">TRAIN</p><h3 id="workoutTitle"></h3></div><span id="workoutTag" class="tag"></span></div><div class="form-grid"><select id="equipmentSelect"><option value="home">Home — 30 lb dumbbells + bodyweight</option><option value="parents">Parents — bag, bench, pull-up bar, preacher bar</option></select><select id="sessionLength"><option value="short">Short</option><option value="standard" selected>Standard</option><option value="full">Full</option><option value="light">Vacation / Light</option></select></div><p id="workoutNote" class="muted"></p><div id="workoutList" class="muscle-list"></div><button id="saveWorkoutBtn" class="primary-btn">Save workout session</button><div id="workoutResult" class="notice hidden"></div></section>
+<section class="card"><div class="section-head"><div><p class="eyebrow">WEEKLY PROGRESS</p><h3>Keep the system moving</h3></div><button id="resetWeekBtn" class="text-btn">New week</button></div><div id="progressList" class="progress-list"></div></section>
+<section class="card compact"><p class="eyebrow">QUICK CAPTURE</p><textarea id="captureInput" rows="3"></textarea><button id="saveCaptureBtn" class="primary-btn">Save to inbox</button><div id="captureCount" class="muted"></div></section>
+</section>
+<section id="scheduleView" class="view"><section class="card hero"><p class="eyebrow">21-DAY ROTATION</p><h2 id="scheduleHeading"></h2><p id="scheduleSubheading" class="muted"></p><div id="cycleStrip" class="cycle-strip"></div></section><section class="card"><div class="section-head"><div><p class="eyebrow">UPCOMING</p><h3>Next 21 days</h3></div></div><div id="scheduleList" class="schedule-list"></div></section></section>
+<section id="tasksView" class="view"><section class="card hero"><p class="eyebrow">TASK SYSTEM</p><h2>Plan, acquire, pack, execute.</h2></section><section class="card"><div class="tabs" id="taskTabs"><button class="tab active" data-tab="todo">To Do</button><button class="tab" data-tab="acquire">Acquire</button><button class="tab" data-tab="packing">Packing</button><button class="tab" data-tab="itinerary">Itinerary</button></div><div class="task-form"><input id="generalTaskText" placeholder="Add an item..."><div class="form-grid"><input id="generalTaskDate" type="date"><select id="generalTaskPriority"><option value="standard">Standard</option><option value="important">Important</option><option value="low">Low</option></select></div><input id="generalTaskNotes" placeholder="Optional note"><button id="addGeneralTaskBtn" class="primary-btn">Add item</button></div><div class="section-head task-list-head"><h3 id="taskListHeading"></h3><span id="generalTaskCount" class="tag"></span></div><div id="generalTaskList" class="task-list"></div></section></section>
+<section id="progressView" class="view"><section class="card hero"><p class="eyebrow">PROGRESS</p><h2>Weekly operating targets</h2></section><section class="card"><div id="progressListFull" class="progress-list"></div></section></section>
+<section id="hqView" class="view"><section class="card hero"><p class="eyebrow">VLA HQ</p><h2>Version 0.2.1</h2><p class="muted">Muscle-first training journal and editable CompTIA A+ tracking are active.</p></section>
+<section class="card"><div class="section-head"><div><p class="eyebrow">CYBERSECURITY PROFILE</p><h3>Edit your exact study position</h3></div></div><div class="stack"><input id="cyberCert"><input id="cyberExam"><input id="cyberResource"><input id="cyberObjective"><input id="cyberChapter" placeholder="Chapter / section"><input id="cyberPage" placeholder="Current page"><input id="cyberNext" placeholder="Next action"><input id="cyberTargetDate" type="date"></div><button id="saveCyberBtn" class="primary-btn">Save cybersecurity profile</button><div class="section-head history-head"><h3>Study history</h3><span id="studyTotal" class="tag"></span></div><div id="studyHistory" class="simple-list"></div></section>
+<section class="card"><div class="section-head"><div><p class="eyebrow">TRAINING HISTORY</p><h3>Strength and volume journal</h3></div></div><div id="trainingHistory" class="simple-list"></div></section>
+<section class="card"><p class="eyebrow">INBOX</p><div id="hqInbox" class="simple-list"></div><button id="clearInboxBtn" class="text-btn danger">Clear inbox</button></section><section class="card"><p class="eyebrow">DATA</p><button id="exportBtn" class="primary-btn">Export backup</button><label class="file-btn">Import backup<input id="importInput" type="file" accept="application/json"></label></section></section>
+</main><nav class="bottom-nav"><button class="nav-item active" data-view="today">Today</button><button class="nav-item" data-view="schedule">Schedule</button><button class="nav-item" data-view="tasks">Tasks</button><button class="nav-item" data-view="progress">Progress</button><button class="nav-item" data-view="hq">HQ</button></nav></div>
+<dialog id="settingsDialog"><form method="dialog" class="dialog-card"><div class="section-head"><h3>HUD Settings</h3><button class="icon-btn" value="cancel">✕</button></div><label>Cycle anchor date<input id="anchorDateInput" type="date"></label><label>Vacation start<input id="vacationStartInput" type="date"></label><label>Vacation end<input id="vacationEndInput" type="date"></label><label>Cybersecurity weekly target<input id="cyberTargetInput" type="number"></label><label>Training weekly target<input id="trainingTargetInput" type="number"></label><label>Creative weekly target<input id="creativeTargetInput" type="number"></label><label>Learning weekly target<input id="learningTargetInput" type="number"></label><button id="saveSettingsBtn" class="primary-btn" value="default">Save settings</button></form></dialog>
+<template id="taskTemplate"><label class="task-row"><input type="checkbox"><span class="task-copy"><strong></strong><small></small></span><button class="delete-task" type="button">×</button></label></template><script src="app.js"></script></body></html>
