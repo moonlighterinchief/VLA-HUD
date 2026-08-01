@@ -1,13 +1,15 @@
-# VLA HUD v0.3.2 Beta
+# VLA HUD v0.3.3 Beta
 
-Stabilization build for the v0.3 training and reflection architecture.
+Goal-driven training engine update.
 
-- Persistent unfinished workouts and visible resume status
-- Discard active workout control
-- Edit/delete saved exercises
-- Delete sessions with linked exercises
-- Recalculate totals after history changes
-- Duplicate finished-session protection
-- Remove obsolete manual Training progress controls
+## Added
+- Physique goals: Oni Back, Boulder Shoulders, Fuller Chest, Larger Arms, Athletic Conditioning, and Combat Readiness.
+- Equipment-aware exercise recommendations for Home and Parents setups.
+- One-tap loading of a generated goal workout into the existing flexible exercise logger.
+- Weekly goal-volume targets by relevant muscle group or movement category.
+- Embedded original SVG exercise demonstrations with form cues and common mistakes.
+- Offline-compatible guidance with no externally hosted images.
+- Evidence-context labels that distinguish practical fit, substitution, activation support, and hypertrophy support.
 
-Uses the existing `vla-hud-v2` local-storage key. Export a backup before clearing browser data.
+## Data
+Uses the existing `vla-hud-v2` local-storage key so prior records remain available. Export a backup before clearing browser data.
