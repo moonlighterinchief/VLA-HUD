@@ -1,19 +1,19 @@
-# VLA HUD v0.2.2
+# VLA HUD v0.3.0 Alpha
+
+This build begins the v0.3 Reflection Engine and preserves the existing `vla-hud-v2` local-storage key for migration from v0.2.2.
 
 ## Added
-- Individual records for every exercise, including exercises previously combined into circuits
-- Per-set weight, reps, and RPE inputs
-- Exercise-specific and whole-workout notes
-- Editable chapter and page fields on the Today dashboard
-- Study-session notes saved with chapter/page history
-- Persistent notes for Today, weekly progress, cybersecurity, and training
-- More descriptive training and study history
+- VLA Constitution in HQ, with persistent amendment/interpretation notes.
+- Daily alignment check-ins for energy, mood, stress, physical condition, mental clarity, satisfaction, and context notes.
+- Weekly wellbeing averages and check-in history.
+- Immediate save confirmations showing how workouts and study sessions affect weekly progress.
+- Bodyweight setting and bodyweight-specific load labels for relevant exercises.
+- Separate Sunday push-up, row, and squat records.
+- Exercise-specific notes and workout-session notes.
+- Study-position synchronization and study-session notes.
 
-## Fixed
-- Full-body circuit movements no longer share one anonymous set grid
-- Workout records now use stable exercise keys and names instead of display indexes alone
-- Empty workouts can no longer be saved
-- Today cybersecurity position and HQ profile stay synchronized
-- Service-worker cache bumped to v0.2.2 so installed devices receive the update
+## Install
+Serve this folder from a local/static web server and open `index.html`. Install it as a PWA from the browser when supported.
 
-Upload all files over the existing GitHub repository files and commit to `main`. After deployment, fully close and reopen the installed PWA if an older cached version remains visible.
+## Data
+Use HQ > Data > Export backup before major upgrades. Existing v0.2.2 local data should merge into this build automatically.
