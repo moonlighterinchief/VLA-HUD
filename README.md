@@ -1,4 +1,4 @@
-# VLA HUD v0.3.3 Beta
+# VLA HUD v0.3.4 Beta
 
 Goal-driven training engine update.
 
