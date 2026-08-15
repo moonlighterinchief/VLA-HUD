@@ -1,8 +1,15 @@
-# VLA HUD v0.3.5 Beta
+# VLA HUD v0.3.6 Beta
 
-Flexible Life Rhythm update built on the v0.3.4 goal-driven training engine.
+Consolidation update built on the v0.3.5 Flexible Life Rhythm release.
 
 ## Added
+- Multiple simultaneous exercises for the same body part, each with independent sets, reps, load, RPE, notes, and history.
+- Sleep tracking for total hours, quality, bedtime, wake time, naps, and interruptions.
+- Editable day-mode overlays with a reason and permanent mode-change backlog.
+- Recovery intelligence with weekly and 21-day context plus a 48-hour follow-up window.
+- Asset repair and maintenance logs, actual costs, completion dates, and automatic condition updates.
+- Paid vacation, holiday, shift-differential, and overtime-eligibility fields in pay configuration.
+- A collapsed Today’s Commitments panel replacing the space-heavy Daily Lanes presentation.
 - A weekday-rhythm layer that sits above the existing 21-day Domino work rotation.
 - Monday and Tuesday defaults: complete personal commitments, then dedicate remaining time to bae.
 - Wednesday and Thursday defaults: parents visit, face time, and Parents equipment profile.
