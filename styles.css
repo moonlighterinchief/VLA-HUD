@@ -15,3 +15,9 @@
 
 /* v0.3.6 consolidation */
 .commitments-card summary{display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;list-style:none}.commitments-card summary::-webkit-details-marker{display:none}.commitments-card summary .eyebrow{display:block;margin-bottom:5px}.commitments-card[open] summary{padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:14px}.exercise-actions{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.exercise-actions .add-btn{margin-top:10px}.maintenance-entry{margin-top:10px;padding:10px;border-left:3px solid var(--accent);background:rgba(255,255,255,.025);border-radius:0 10px 10px 0}.v036-pay{border-color:rgba(126,220,255,.25)}@media(max-width:520px){.exercise-actions{grid-template-columns:1fr}}
+
+.v037-card{border-color:rgba(255,255,255,.12)}
+.v037-card .notice{margin-top:12px}
+.v037-priority{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center}
+.v037-priority strong:first-child{font-size:1.05rem}
+.money-positive{font-weight:800}

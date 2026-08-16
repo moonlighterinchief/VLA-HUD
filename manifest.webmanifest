@@ -1,5 +1,5 @@
 {
-  "name": "VLA HUD",
+  "name": "VLA HUD v0.3.7 Beta",
   "short_name": "VLA HUD",
   "start_url": "./",
   "display": "standalone",
@@ -7,6 +7,11 @@
   "theme_color": "#0b0d10",
   "description": "A personal operating system for daily execution, training, learning, creativity, and life.",
   "icons": [
-    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ]
 }
