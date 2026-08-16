@@ -10,7 +10,7 @@ const principles=[
 ];
 const profileDefaults={cert:"CompTIA A+",exam:"Core 1 Exam 220-1201",resource:"CompTIA A+ Complete Study Guide Volume 1",objective:"Learning Objective 2",chapter:"",page:"",next:"Continue Learning Objective 2",targetDate:"",notes:"",objectives:[]};
 const rhythmDefaults={Sunday:{focus:"Flexible social split — family, bae after 5 PM, fellas, or reset",equipment:"home"},Monday:{focus:"Complete personal commitments, then dedicate remaining time to bae",equipment:"home"},Tuesday:{focus:"Complete personal commitments, then dedicate remaining time to bae",equipment:"home"},Wednesday:{focus:"Parents visit, face time, and workout down the road",equipment:"parents"},Thursday:{focus:"Parents visit, face time, and workout down the road",equipment:"parents"},Friday:{focus:"Personal commitments, then gaming with the fellas",equipment:"home"},Saturday:{focus:"Personal commitments, then gaming with the fellas",equipment:"home"}};
-const defaults={version:"0.3.7-beta",settings:{anchorDate:"2026-07-29",vacationStart:"2026-08-07",vacationEnd:"2026-08-13",bodyweight:180,cyberTarget:12,trainingTarget:5,creativeTarget:8,learningTarget:5},dayKey:"",weekKey:"",energy:"Standard",mission:"Evolution",nextAction:"",modeOverride:"",dailyTasks:[],dailyNotes:"",progressNotes:"",progress:{Cybersecurity:0,Training:0,Creative:0,Learning:0},generalTasks:[],inbox:[],activeTaskTab:"todo",wellbeing:{history:[],draft:{}},constitution:{notes:""},rhythm:{defaults:rhythmDefaults,overrides:{},actuals:{},modeHistory:[]},cyber:{...profileDefaults,history:[]},training:{equipment:"home",length:"standard",history:[],exerciseHistory:[],activeSession:null,editingId:null,draft:{},extraGroupsByDay:{},notes:"",goal:"oni-back",goalPlan:null,useGoalPlan:false},work:{history:[]},finance:{baseRate:0,otMultiplier:1.5,deductionRate:0,weeklyIncomeGoal:0,shiftDifferential:0,differentialType:"hourly",differentialAppliesToVacation:false,obligations:[],paychecks:[]},acquisitions:[],assets:[],weeklyArchives:[],strategy:{currentEra:"Cybersecurity Transition",primaryVehicle:"Cybersecurity",supportingVehicle:"ASR Group Domino Sugar — Bulk Loading Operator",longTerm:"Jahmé · VLA Holdings · VLA Motors · VLA Media"}};
+const defaults={version:"0.3.7.1-beta",settings:{anchorDate:"2026-07-29",vacationStart:"2026-08-07",vacationEnd:"2026-08-13",bodyweight:180,cyberTarget:12,trainingTarget:5,creativeTarget:8,learningTarget:5},dayKey:"",weekKey:"",energy:"Standard",mission:"Evolution",nextAction:"",modeOverride:"",dailyTasks:[],dailyNotes:"",progressNotes:"",progress:{Cybersecurity:0,Training:0,Creative:0,Learning:0},generalTasks:[],inbox:[],activeTaskTab:"todo",wellbeing:{history:[],draft:{}},constitution:{notes:""},rhythm:{defaults:rhythmDefaults,overrides:{},actuals:{},modeHistory:[]},cyber:{...profileDefaults,history:[]},training:{equipment:"home",length:"standard",history:[],exerciseHistory:[],activeSession:null,editingId:null,draft:{},extraGroupsByDay:{},notes:"",goal:"oni-back",goalPlan:null,useGoalPlan:false},work:{history:[]},finance:{baseRate:0,otMultiplier:1.5,deductionRate:0,weeklyIncomeGoal:0,shiftDifferential:0,differentialType:"hourly",differentialAppliesToVacation:false,obligations:[],paychecks:[]},acquisitions:[],assets:[],weeklyArchives:[],strategy:{currentEra:"Cybersecurity Transition",primaryVehicle:"Cybersecurity",supportingVehicle:"ASR Group Domino Sugar — Bulk Loading Operator",longTerm:"Jahmé · VLA Holdings · VLA Motors · VLA Media"}};
 let state=load();
 function clone(v){return JSON.parse(JSON.stringify(v))}
 function merge(a,b){Object.keys(b||{}).forEach(k=>{if(b[k]&&typeof b[k]==="object"&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==="object"&&!Array.isArray(a[k]))a[k]=merge(a[k],b[k]);else a[k]=b[k]});return a}
@@ -172,7 +172,7 @@ const oldRender=render;render=function(){oldRender();renderVlaEnhancements();if(
 // ===== VLA HUD v0.3.7 Beta =====
 function ensure037(){
   ensureVlaData();
-  state.version="0.3.7-beta";
+  state.version="0.3.7.1-beta";
   state.strategy.supportingVehicle="ASR Group Domino Sugar — Bulk Loading Operator";
   state.finance.expenses??=[];
   state.finance.creditAccounts??=[];
@@ -243,5 +243,134 @@ const addAcq037=id("addAcquisitionBtn")?.onclick;
 if(id("addAcquisitionBtn")) id("addAcquisitionBtn").onclick=()=>{const name=id("acquisitionNameInput").value.trim();if(!name)return;state.acquisitions.push({id:`acq-${Date.now()}`,name,cost:Number(id("acquisitionCostInput").value||0),saved:Number(id("acquisitionSaved037").value||0),monthlyContribution:Number(id("acquisitionContribution037").value||0),priority:id("acquisitionPriorityInput").value,supports:id("acquisitionSupportsInput").value.trim(),tier:id("acquisitionTier037").value,executionPriority:id("acquisitionExecution037").value,status:"Planned"});save();renderOperations();render037()};
 const render036=render;
 render=function(){render036();render037();if(id("expenseDate037"))id("expenseDate037").value=dateKey()};
+
+
+// ===== VLA HUD v0.3.7.1 Beta — P0 Data Continuity =====
+const VLA_BACKUP_SCHEMA="vla-hud-backup-v1";
+const VLA_SNAPSHOT_KEY="vla-hud-local-snapshots-v1";
+const VLA_BACKUP_META_KEY="vla-hud-backup-meta-v1";
+const VLA_MAX_SNAPSHOTS=12;
+
+function safeJson(v){try{return JSON.parse(JSON.stringify(v))}catch{return null}}
+function checksum0371(obj){
+  const s=JSON.stringify(obj);
+  let h=2166136261;
+  for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}
+  return (h>>>0).toString(16).padStart(8,"0");
+}
+function backupEnvelope0371(reason="manual"){
+  const payload=safeJson(state);
+  const now=new Date().toISOString();
+  return {
+    schema:VLA_BACKUP_SCHEMA,
+    appVersion:state.version||"unknown",
+    createdAt:now,
+    reason,
+    checksum:checksum0371(payload),
+    counts:{
+      trainingSessions:Number(state.training?.history?.length||0),
+      exerciseRecords:Number(state.training?.exerciseHistory?.length||0),
+      studySessions:Number(state.cyber?.history?.length||0),
+      wellbeingRecords:Number(state.wellbeing?.history?.length||0),
+      expenses:Number(state.finance?.expenses?.length||0),
+      creditAccounts:Number(state.finance?.creditAccounts?.length||0),
+      acquisitions:Number(state.acquisitions?.length||0),
+      assets:Number(state.assets?.length||0)
+    },
+    payload
+  };
+}
+function validateEnvelope0371(env){
+  if(!env||env.schema!==VLA_BACKUP_SCHEMA||!env.payload) return {ok:false,message:"Not a valid VLA backup package."};
+  const actual=checksum0371(env.payload);
+  if(actual!==env.checksum) return {ok:false,message:"Backup checksum failed. File may be incomplete or corrupted."};
+  return {ok:true,message:"Backup verified.",actual};
+}
+function getSnapshots0371(){
+  try{return JSON.parse(localStorage.getItem(VLA_SNAPSHOT_KEY)||"[]")}catch{return []}
+}
+function saveSnapshots0371(arr){localStorage.setItem(VLA_SNAPSHOT_KEY,JSON.stringify(arr.slice(0,VLA_MAX_SNAPSHOTS)))}
+function createSnapshot0371(reason="manual snapshot"){
+  const env=backupEnvelope0371(reason);
+  const snaps=getSnapshots0371();
+  snaps.unshift(env);
+  saveSnapshots0371(snaps);
+  localStorage.setItem(VLA_BACKUP_META_KEY,JSON.stringify({lastSnapshotAt:env.createdAt,lastSnapshotChecksum:env.checksum,lastSnapshotReason:reason}));
+  return env;
+}
+function autoSnapshot0371(reason="automatic"){
+  try{
+    const meta=JSON.parse(localStorage.getItem(VLA_BACKUP_META_KEY)||"{}");
+    const last=meta.lastAutoSnapshotAt?new Date(meta.lastAutoSnapshotAt).getTime():0;
+    if(Date.now()-last<6*60*60*1000) return;
+    const env=createSnapshot0371(reason);
+    localStorage.setItem(VLA_BACKUP_META_KEY,JSON.stringify({...meta,lastAutoSnapshotAt:env.createdAt,lastSnapshotAt:env.createdAt,lastSnapshotChecksum:env.checksum,lastSnapshotReason:reason}));
+  }catch{}
+}
+function downloadJson0371(data,filename){
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));
+  a.download=filename;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function createFullBackup0371(reason="manual full backup"){
+  const env=backupEnvelope0371(reason);
+  const d=dateKey();
+  downloadJson0371(env,`VLA-HUD-full-backup-${d}.json`);
+  localStorage.setItem(VLA_BACKUP_META_KEY,JSON.stringify({...JSON.parse(localStorage.getItem(VLA_BACKUP_META_KEY)||"{}"),lastExternalBackupAt:env.createdAt,lastExternalBackupChecksum:env.checksum,lastExternalBackupVerified:true}));
+  createSnapshot0371("paired with full backup");
+  return env;
+}
+function recoveryPackage0371(){
+  const snaps=getSnapshots0371();
+  const pkg={schema:"vla-hud-recovery-package-v1",createdAt:new Date().toISOString(),current:backupEnvelope0371("recovery package current state"),snapshots:snaps};
+  downloadJson0371(pkg,`VLA-HUD-recovery-package-${dateKey()}.json`);
+}
+function restoreEnvelope0371(env){
+  const check=validateEnvelope0371(env);
+  if(!check.ok) throw new Error(check.message);
+  // Snapshot current state before destructive restore.
+  createSnapshot0371("pre-restore safety snapshot");
+  state=merge(clone(defaults),env.payload);
+  state.version="0.3.7.1-beta";
+  save();
+  createSnapshot0371("post-restore restored state");
+  return check;
+}
+function fmtWhen0371(s){if(!s)return"Never";try{return new Date(s).toLocaleString()}catch{return s}}
+function renderRecovery0371(){
+  if(!id("backupStatus0371"))return;
+  const meta=(()=>{try{return JSON.parse(localStorage.getItem(VLA_BACKUP_META_KEY)||"{}")}catch{return{}}})();
+  const snaps=getSnapshots0371();
+  const latest=snaps[0];
+  const latestCheck=latest?validateEnvelope0371(latest):null;
+  id("backupStatus0371").innerHTML=[
+    ["Last external backup",fmtWhen0371(meta.lastExternalBackupAt)],
+    ["Last local snapshot",fmtWhen0371(meta.lastSnapshotAt)],
+    ["Snapshots retained",String(snaps.length)],
+    ["Latest snapshot integrity",latestCheck?latestCheck.ok?"Verified":"FAILED":"No snapshot yet"]
+  ].map(([a,b])=>`<div class="summary-item"><span>${esc(a)}</span><strong>${esc(b)}</strong></div>`).join("");
+  id("snapshotList0371").innerHTML=snaps.length?snaps.map((x,i)=>`<div class="simple-item"><strong>${i===0?"Latest · ":""}${esc(fmtWhen0371(x.createdAt))}</strong><div class="muted">${esc(x.reason||"snapshot")} · ${esc(x.appVersion||"unknown")} · checksum ${esc(x.checksum||"")}</div><div class="muted">Training ${x.counts?.trainingSessions||0} · Study ${x.counts?.studySessions||0} · Wellbeing ${x.counts?.wellbeingRecords||0} · Expenses ${x.counts?.expenses||0}</div><button class="text-btn restoreSnapshot0371" data-index="${i}" type="button">Restore this snapshot</button></div>`).join(""):'<div class="simple-item muted">No local snapshots yet.</div>';
+  id("recoveryNotice0371").innerHTML=meta.lastExternalBackupAt
+    ?`<strong>Portable backup exists.</strong> Last recorded external backup: ${esc(fmtWhen0371(meta.lastExternalBackupAt))}. Keep that JSON file outside the PWA.`
+    :'<strong>No portable backup recorded yet.</strong> Create a full backup before entering important data or installing future updates.';
+  document.querySelectorAll(".restoreSnapshot0371").forEach(btn=>btn.onclick=()=>{const i=Number(btn.dataset.index);const env=getSnapshots0371()[i];if(!env)return;if(confirm("Restore this snapshot? A safety snapshot of the current state will be created first.")){try{restoreEnvelope0371(env);render();alert("Snapshot restored successfully.")}catch(e){alert(e.message)}}});
+}
+if(id("createBackup0371")) id("createBackup0371").onclick=()=>{createFullBackup0371();renderRecovery0371();alert("Full VLA backup created. Save the JSON file somewhere outside this app.")};
+if(id("createSnapshot0371")) id("createSnapshot0371").onclick=()=>{createSnapshot0371("manual snapshot");renderRecovery0371()};
+if(id("verifyLatest0371")) id("verifyLatest0371").onclick=()=>{const latest=getSnapshots0371()[0];if(!latest)return alert("No local snapshot exists yet.");const r=validateEnvelope0371(latest);alert(r.message)};
+if(id("exportRecovery0371")) id("exportRecovery0371").onclick=()=>recoveryPackage0371();
+if(id("clearOldSnapshots0371")) id("clearOldSnapshots0371").onclick=()=>{const s=getSnapshots0371();saveSnapshots0371(s.slice(0,3));renderRecovery0371()};
+if(id("restoreBackup0371")) id("restoreBackup0371").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const obj=JSON.parse(r.result);if(obj.schema==="vla-hud-recovery-package-v1"&&obj.current)obj.current.reason="restored from recovery package";restoreEnvelope0371(obj.schema==="vla-hud-recovery-package-v1"?obj.current:obj);render();alert("VLA backup restored successfully.")}catch(err){alert(`Restore failed: ${err.message}`)}};r.readAsText(f);e.target.value=""};
+
+// Snapshot at startup and on every save cycle via a lightweight wrapper.
+const save0371Original=save;
+save=function(){save0371Original();autoSnapshot0371("automatic state checkpoint")};
+
+const render0371Base=render;
+render=function(){render0371Base();renderRecovery0371()};
+
+// Before a service-worker driven version update takes over, keep a local safety point.
+createSnapshot0371("v0.3.7.1 installation checkpoint");
 
 if("serviceWorker"in navigator)navigator.serviceWorker.register("service-worker.js");render();

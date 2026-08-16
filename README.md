@@ -1,8 +1,20 @@
-# VLA HUD v0.3.7 Beta
+# VLA HUD v0.3.7.1 Beta
 
-Active personal operating system build.
+P0 Data Continuity hotfix on top of v0.3.7 Beta.
 
-v0.3.7 adds the strategic priority engine, resource-ceiling logic, recurring + variable expense ledger, personal/business credit tracking, evidence-to-income map, independent vehicle scenarios, acquisition savings/tier fields, immediate PS5 monitor + desk priorities, and multi-repair asset cost aggregation while preserving the v0.3.6 training, recovery, work, finance, asset, and study systems.
+Adds:
+- Recovery Center
+- Portable full-state JSON backups
+- Full restore with checksum validation
+- Local rolling snapshots
+- Automatic state checkpoints
+- Pre/post restore safety snapshots
+- Recovery package export
+- Visible last-backup / snapshot integrity status
+- Network-first service-worker update behavior to reduce stale Home Screen PWA versions
 
-North Star: EVOLUTION
-Build capability → produce proof → document the process → create ownership → transfer the knowledge.
+Engineering principle:
+The HUD is replaceable. The history is not.
+
+IMPORTANT:
+Local snapshots still live in browser storage. They protect against ordinary state corruption and bad edits, but not deletion of all site/app data. Portable backup files must be kept outside the PWA until cloud/device-independent persistence is implemented.

@@ -21,3 +21,6 @@
 .v037-priority{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center}
 .v037-priority strong:first-child{font-size:1.05rem}
 .money-positive{font-weight:800}
+
+.recovery-card .file-btn{display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 12px;cursor:pointer}
+.recovery-card .file-btn:hover{border-color:rgba(255,255,255,.28)}
